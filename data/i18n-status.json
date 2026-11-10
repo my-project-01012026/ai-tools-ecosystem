@@ -1,0 +1,20 @@
+{
+  "languages": {
+    "en": "DRAFT",
+    "es": "DRAFT",
+    "hi": "DRAFT",
+    "id": "DRAFT",
+    "ja": "DRAFT",
+    "ko": "DRAFT",
+    "pt-BR": "DRAFT",
+    "ru": "DRAFT",
+    "th": "DRAFT",
+    "tr": "DRAFT",
+    "uk": "DRAFT",
+    "vi": "DRAFT"
+  },
+  "release_product_language_pair": "EN_TO_RU_ONLY",
+  "schema": 1,
+  "seo_indexing": "DISABLED_UNTIL_APPROVAL",
+  "translation_status": "DRAFT_HUMAN_REVIEW_REQUIRED"
+}

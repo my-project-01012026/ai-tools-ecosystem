@@ -1,0 +1,79 @@
+{
+  "burn": {
+    "assumption": "reserved tokens, not necessarily circulating supply",
+    "monthly_plan": 1000000,
+    "months": 120,
+    "reserve": 120000000,
+    "transactions_count": 0
+  },
+  "decimals": 6,
+  "network": "Solana",
+  "reserves": [
+    {
+      "amount": 350000000,
+      "key": "community",
+      "name_en": "Community",
+      "name_ru": "Сообщество",
+      "owner": "NOT_ASSIGNED",
+      "percent": 35,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 200000000,
+      "key": "development",
+      "name_en": "Development",
+      "name_ru": "Разработка",
+      "owner": "NOT_ASSIGNED",
+      "percent": 20,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 150000000,
+      "key": "team",
+      "name_en": "Team",
+      "name_ru": "Команда",
+      "owner": "NOT_ASSIGNED",
+      "percent": 15,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 120000000,
+      "key": "burn_reserve",
+      "name_en": "Burn reserve",
+      "name_ru": "Резерв сжигания",
+      "owner": "NOT_ASSIGNED",
+      "percent": 12,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 100000000,
+      "key": "financing",
+      "name_en": "Financing",
+      "name_ru": "Финансирование",
+      "owner": "NOT_ASSIGNED",
+      "percent": 10,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 50000000,
+      "key": "liquidity",
+      "name_en": "Liquidity",
+      "name_ru": "Ликвидность",
+      "owner": "NOT_ASSIGNED",
+      "percent": 5,
+      "vesting": "NOT_APPROVED"
+    },
+    {
+      "amount": 30000000,
+      "key": "partners",
+      "name_en": "Partners",
+      "name_ru": "Партнёры",
+      "owner": "NOT_ASSIGNED",
+      "percent": 3,
+      "vesting": "NOT_APPROVED"
+    }
+  ],
+  "schema": 1,
+  "status": "DRAFT_NOT_ISSUED",
+  "total_supply": 1000000000
+}

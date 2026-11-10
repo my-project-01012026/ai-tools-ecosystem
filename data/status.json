@@ -1,0 +1,25 @@
+{
+  "product": {
+    "installer": "NOT_AVAILABLE",
+    "license_audit": "HOLD",
+    "minimum_hardware": "NOT_ESTABLISHED",
+    "name": "Local Media AI Community 1.0",
+    "pipeline": "EN_TO_RU_MP4",
+    "release": "NOT_RELEASED",
+    "windows_nvidia_e2e": "NOT_CONFIRMED"
+  },
+  "schema": 1,
+  "site": "STAGING_ONLY",
+  "token": {
+    "devnet_security": "NOT_CONFIRMED",
+    "legal_review": "HOLD",
+    "mint_address": null,
+    "network": "Solana",
+    "pool_address": null,
+    "sales": false,
+    "status": "NOT_ISSUED",
+    "utility": "NOT_VALIDATED"
+  },
+  "updated": "2026-11-08",
+  "version": "0.12.0"
+}
