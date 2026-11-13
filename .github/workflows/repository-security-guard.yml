@@ -1,0 +1,75 @@
+name: Repository security guard
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  changed-file-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Scan changed files without executing repository code
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, re, subprocess, sys
+          
+          def git(*args, data=None):
+              return subprocess.run(["git", *args], input=data, stdout=subprocess.PIPE,
+                                    stderr=subprocess.DEVNULL, check=True).stdout
+          
+          def main():
+              base, head = os.environ["BASE_SHA"], os.environ["HEAD_SHA"]
+              if not re.fullmatch(r"[0-9a-f]{40}", base) or not re.fullmatch(r"[0-9a-f]{40}", head):
+                  raise ValueError("invalid comparison refs")
+              if base == "0" * 40:
+                  base = git("hash-object", "-t", "tree", "-w", "--stdin", data=b"").decode().strip()
+              paths = git("diff", "--no-ext-diff", "--no-textconv", "--name-only", "-z",
+                          "--diff-filter=ACMRT", base, head, "--").split(b"\0")
+              token = re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|hnk_[A-Za-z0-9_-]{20,}|-----BEGIN (?:RSA |OPENSSH |EC |ENCRYPTED )?PRIVATE KEY-----)")
+              ioc = re.compile(rb"(?:^|/)(?:wfx[-_]loot[^/]*|build-audit-[^/]*\.ya?ml|\.ci-[^/]*\.sh)$", re.I)
+              sensitive = re.compile(rb"(?:^|/)(?:\.env(?:\..*)?|id_rsa|id_ed25519|[^/]+\.(?:p12|pfx|pem|key)|[^/]+\.local\.json)$", re.I)
+              allowed_example = re.compile(rb"(?:^|/)\.env\.example$")
+              uses = re.compile(rb"^\s*(?:-\s*)?uses:\s*['\"]?([^'\" \t#]+)", re.M)
+              risky = re.compile(rb"^\s*(?:pull_request_target|write-all)\s*:|^\s*permissions:\s*write-all\b|toJSON\s*\(\s*secrets\s*\)", re.I | re.M)
+              findings = set()
+              for path in filter(None, paths):
+                  if ioc.search(path):
+                      findings.add("known suspicious filename")
+                  if sensitive.search(path) and not allowed_example.search(path):
+                      findings.add("potential credential file")
+                  name = os.fsdecode(path)
+                  patch = git("diff", "--no-ext-diff", "--no-textconv", "--unified=0", base, head, "--", name)
+                  for line in patch.splitlines():
+                      if line.startswith(b"+") and not line.startswith(b"+++ ") and token.search(line[1:]):
+                          findings.add("credential-shaped addition")
+                  if re.match(rb"^\.github/workflows/[^/]+\.ya?ml$", path, re.I):
+                      contents = git("show", head + ":" + name)
+                      if risky.search(contents):
+                          findings.add("privileged workflow pattern")
+                      for action in uses.findall(contents):
+                          if not re.fullmatch(rb"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?@[0-9a-fA-F]{40}", action):
+                              findings.add("action or reusable workflow not pinned to full SHA")
+              if findings:
+                  for finding in sorted(findings):
+                      print("BLOCK: " + finding)
+                  return 1
+              print("PASS: changed-file credential and workflow checks")
+              return 0
+          
+          try:
+              sys.exit(main())
+          except (OSError, subprocess.CalledProcessError, ValueError, KeyError):
+              print("BLOCK: comparison or scanner failed; inspect refs without exposing secrets")
+              sys.exit(2)
+          PY
