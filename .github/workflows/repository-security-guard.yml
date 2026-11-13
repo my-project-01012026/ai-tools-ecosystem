@@ -25,7 +25,7 @@ jobs:
           import os, re, subprocess, sys
           
           def git(*args, data=None):
-              return subprocess.run(["git", *args], input=data, stdout=subprocess.PIPE,
+              return subprocess.run(["git", "--literal-pathspecs", *args], input=data, stdout=subprocess.PIPE,
                                     stderr=subprocess.DEVNULL, check=True).stdout
           
           def main():
@@ -41,7 +41,7 @@ jobs:
               sensitive = re.compile(rb"(?:^|/)(?:\.env(?:\..*)?|id_rsa|id_ed25519|[^/]+\.(?:p12|pfx|pem|key)|[^/]+\.local\.json)$", re.I)
               allowed_example = re.compile(rb"(?:^|/)\.env\.example$")
               uses = re.compile(rb"^[ \t]*(?:-[ \t]*)?uses:[ \t]*['\"]?([^'\" \t\r\n#]+)", re.M)
-              risky = re.compile(rb"^\s*(?:pull_request_target|write-all)\s*:|^\s*permissions:\s*write-all\b|toJSON\s*\(\s*secrets\s*\)", re.I | re.M)
+              risky = re.compile(rb"^\s*(?:pull_request_target|write-all)\s*:|^\s*permissions:\s*write-all\b|^[ \t]*[A-Za-z_-]+:[ \t]*write[ \t]*(?:#.*)?$|^[ \t]*secrets:[ \t]*inherit\b|toJSON\s*\(\s*secrets\s*\)", re.I | re.M)
               findings = set()
               for path in filter(None, paths):
                   if ioc.search(path):
