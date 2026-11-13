@@ -1,0 +1,125 @@
+name: Repository history audit
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/repository-history-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/repository-history-audit.yml'
+permissions:
+  contents: read
+jobs:
+  reachable-history-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Inspect reachable Git blobs without executing repository code
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re, subprocess, sys
+          
+          def git(*args, data=None):
+              return subprocess.run(["git", "--literal-pathspecs", *args], input=data,
+                                    stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                    check=True, timeout=120).stdout
+          
+          PATTERNS = {
+              "GitHub token": rb"(?:gh[pousr]_[A-Za-z0-9]{30,255}|github_pat_[A-Za-z0-9_]{30,255})",
+              "here.now token": rb"hnk_[A-Za-z0-9_-]{20,255}",
+              "Private key": rb"-----BEGIN (?:RSA |OPENSSH |EC |ENCRYPTED |DSA )?PRIVATE KEY-----",
+              "AWS access key": rb"(?:AKIA|ASIA)[A-Z0-9]{16}",
+              "OpenAI-like token": rb"sk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{30,255}",
+              "JWT-like token": rb"eyJ[A-Za-z0-9_-]{8,512}\.[A-Za-z0-9_-]{8,512}\.[A-Za-z0-9_-]{8,512}",
+              "ISNA token assignment": rb"(?i)[\"']?(?:portalToken|personalAccountToken|X-Portal-Token)[\"']?\s{0,10}[:=]\s{0,10}[\"'][A-Za-z0-9._-]{16,512}[\"']",
+          }
+          PATTERNS = {name: re.compile(pattern) for name, pattern in PATTERNS.items()}
+          IOC_PATH = re.compile(rb"(?:^|/)(?:wfx[-_]loot[^/]*|build-audit-[^/]*\.ya?ml|\.ci-[^/]*\.sh)$", re.I)
+          IOC_SUBJECT = re.compile(rb"(?:wfx[-_]loot|^docs: dependency audit notes$|^ci: refresh build cache$|^chore: add (?:ci helper|dependency audit workflow)$)", re.I)
+          
+          def main():
+              if git("rev-parse", "--is-shallow-repository").strip() != b"false":
+                  raise ValueError("shallow history")
+              refs = git("for-each-ref", "--format=%(refname)", "refs/remotes/origin").splitlines()
+              branches = sum(x != b"refs/remotes/origin/HEAD" for x in refs)
+              tags = len(git("for-each-ref", "--format=%(refname)", "refs/tags").splitlines())
+              commits = int(git("rev-list", "--count", "--all"))
+              ids = git("rev-list", "--objects", "--all", "--no-object-names")
+              if len(ids.splitlines()) > 200000:
+                  raise ValueError("object count exceeds budget")
+              meta = git("cat-file", "--batch-check=%(objectname) %(objecttype) %(objectsize)", data=ids)
+              blobs = []
+              for line in meta.splitlines():
+                  parts = line.split()
+                  if len(parts) != 3 or not re.fullmatch(rb"[0-9a-f]{40}", parts[0]):
+                      raise ValueError("unexpected object metadata")
+                  if parts[1] == b"blob":
+                      blobs.append((parts[0], int(parts[2])))
+              if sum(size for _, size in blobs) > 1024 * 1024 * 1024:
+                  raise ValueError("history byte budget exceeded")
+              print("Coverage: remote branches=%d tags=%d reachable commits=%d unique blobs=%d" %
+                    (branches, tags, commits, len(blobs)), flush=True)
+              findings = []
+              count = 0
+              proc = subprocess.Popen(["git", "cat-file", "--batch"], stdin=subprocess.PIPE,
+                                      stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+              try:
+                  for oid, size in blobs:
+                      proc.stdin.write(oid + b"\n")
+                      proc.stdin.flush()
+                      header = proc.stdout.readline().split()
+                      if header != [oid, b"blob", str(size).encode()]:
+                          raise ValueError("blob header mismatch")
+                      remaining = size
+                      overlap = b""
+                      matches = set()
+                      while remaining:
+                          block = proc.stdout.read(min(65536, remaining))
+                          if not block:
+                              raise ValueError("incomplete blob")
+                          remaining -= len(block)
+                          window = overlap + block
+                          for name, pattern in PATTERNS.items():
+                              if pattern.search(window):
+                                  matches.add(name)
+                          overlap = window[-2048:]
+                      if proc.stdout.read(1) != b"\n":
+                          raise ValueError("blob framing mismatch")
+                      if matches:
+                          count += 1
+                          if len(findings) < 30:
+                              findings.append((oid.decode(), sorted(matches)))
+                  proc.stdin.close()
+                  if proc.wait(timeout=30):
+                      raise ValueError("git batch failed")
+              finally:
+                  if proc.poll() is None:
+                      proc.kill()
+                      proc.wait()
+              paths = git("log", "--all", "--format=", "--name-only", "-z").split(b"\0")
+              suspicious_paths = {p.lstrip(b"\n") for p in paths if IOC_PATH.search(p.lstrip(b"\n"))}
+              subjects = git("log", "--all", "--format=%s", "-z").split(b"\0")
+              suspicious_subjects = sum(bool(IOC_SUBJECT.search(s)) for s in subjects)
+              for oid, names in findings:
+                  print("REVIEW blob=%s categories=%s" % (oid, ", ".join(names)))
+              print("Summary: candidate blobs=%d suspicious historical paths=%d suspicious subjects=%d" %
+                    (count, len(suspicious_paths), suspicious_subjects))
+              if count or suspicious_paths or suspicious_subjects:
+                  print("REVIEW_REQUIRED: candidate patterns are not proof of exposed credentials.")
+                  return 1
+              print("PASS: no selected patterns in reachable Git history")
+              return 0
+          
+          try:
+              sys.exit(main())
+          except (OSError, ValueError, subprocess.SubprocessError):
+              print("INCOMPLETE: history scan failed or exceeded its bounds; do not treat as clean.")
+              sys.exit(2)
+          PY
