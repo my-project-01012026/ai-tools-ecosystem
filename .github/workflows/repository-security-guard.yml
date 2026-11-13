@@ -40,7 +40,7 @@ jobs:
               ioc = re.compile(rb"(?:^|/)(?:wfx[-_]loot[^/]*|build-audit-[^/]*\.ya?ml|\.ci-[^/]*\.sh)$", re.I)
               sensitive = re.compile(rb"(?:^|/)(?:\.env(?:\..*)?|id_rsa|id_ed25519|[^/]+\.(?:p12|pfx|pem|key)|[^/]+\.local\.json)$", re.I)
               allowed_example = re.compile(rb"(?:^|/)\.env\.example$")
-              uses = re.compile(rb"^\s*(?:-\s*)?uses:\s*['\"]?([^'\" \t#]+)", re.M)
+              uses = re.compile(rb"^[ \t]*(?:-[ \t]*)?uses:[ \t]*['\"]?([^'\" \t\r\n#]+)", re.M)
               risky = re.compile(rb"^\s*(?:pull_request_target|write-all)\s*:|^\s*permissions:\s*write-all\b|toJSON\s*\(\s*secrets\s*\)", re.I | re.M)
               findings = set()
               for path in filter(None, paths):
