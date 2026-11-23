@@ -22,7 +22,7 @@ def verify_headers(content):
         "script-src 'none'", "frame-ancestors 'none'",
         "X-Content-Type-Options: nosniff", "X-Robots-Tag: noindex",
     )
-    if (not content.startswith("/*\n") or "\r" in content
+    if (not content.lstrip("\n").startswith("# Cloudflare Pages:") or "\r" in content
             or any(x not in content for x in required)
             or "unsafe-inline" in content or "unsafe-eval" in content
             or any(len(x) > 2000 for x in content.splitlines())):
