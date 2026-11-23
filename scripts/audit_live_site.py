@@ -99,6 +99,18 @@ def audit(slug, rows=None, opener=None):
     root, root_headers = fetch(origin, len(checked["index.html"]), "homepage /", opener)
     if root != checked["index.html"]:
         raise AuditFailure("Public homepage / differs from approved index.html")
+
+    # Visitors follow friendly /section/ links, not /section/index.html URLs.
+    # A host can serve all file paths correctly while these navigation routes
+    # return 404 or stale content. Verify each real visitor-facing route.
+    for name, data in checked.items():
+        if not name.endswith("/index.html"):
+            continue
+        route = name[:-len("index.html")]
+        routed, _ = fetch(origin + route, len(data), "navigation /" + route, opener)
+        if routed != data:
+            raise AuditFailure("Visitor-facing route differs from approved page: /" + route)
+
     robots = checked["robots.txt"].decode("utf-8", "replace")
     if not re.search(r"(?m)^Disallow:\s*/\s*$", robots):
         raise AuditFailure("Prelaunch robots.txt unexpectedly allows indexing")
@@ -131,7 +143,10 @@ def main(argv=None):
     print("LIVE AUDIT URL:", result["url"])
     for warning in result["warnings"]:
         print("WARNING:", warning)
-    print("LIVE AUDIT:", "PASS WITH WARNINGS" if result["warnings"] else "PASS")
+    if result["warnings"]:
+        print("LIVE AUDIT: INCOMPLETE - review warnings before sign-off")
+        return 3
+    print("LIVE AUDIT: PASS")
     return 0
 
 

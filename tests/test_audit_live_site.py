@@ -37,7 +37,7 @@ class OfflineLiveSiteTests(unittest.TestCase):
         if not url.startswith("https://qa-safe.here.now/"):
             raise AssertionError("Unexpected destination")
         name = url.removeprefix("https://qa-safe.here.now/")
-        raw = {"": HOME, "index.html": HOME, "cvlm/index.html": CVLM,
+        raw = {"": HOME, "index.html": HOME, "cvlm/": CVLM, "cvlm/index.html": CVLM,
                "robots.txt": ROBOTS}.get(name)
         if raw is None:
             raise AssertionError("Unexpected path")
@@ -53,6 +53,29 @@ class OfflineLiveSiteTests(unittest.TestCase):
             result = audit.audit("qa-safe", rows=self.rows())
         self.assertEqual(result["files"], 3)
         self.assertEqual(result["warnings"], [])
+
+    def test_broken_visitor_route_rejected(self):
+        def broken_route(url, size, label, opener=None):
+            if url == "https://qa-safe.here.now/cvlm/":
+                raise audit.AuditFailure("friendly route 404")
+            return self.fake_fetch(url, size, label, opener)
+        with patch.object(audit, "fetch", side_effect=broken_route):
+            with self.assertRaises(audit.AuditFailure):
+                audit.audit("qa-safe", rows=self.rows())
+
+    def test_stale_visitor_route_rejected(self):
+        def stale_route(url, size, label, opener=None):
+            if url == "https://qa-safe.here.now/cvlm/":
+                return b"stale", {"Content-Type": "text/html"}
+            return self.fake_fetch(url, size, label, opener)
+        with patch.object(audit, "fetch", side_effect=stale_route):
+            with self.assertRaisesRegex(audit.AuditFailure, "Visitor-facing route"):
+                audit.audit("qa-safe", rows=self.rows())
+
+    def test_warnings_fail_workflow_signoff(self):
+        with patch.object(audit, "audit", return_value={"url": "https://qa-safe.here.now/", "files": 3,
+                                                       "warnings": ["Missing live HTTP header"]}):
+            self.assertNotEqual(audit.main(["--slug", "qa-safe"]), 0)
 
     def test_invalid_slug_rejected_before_network(self):
         for slug in ("http://evil.invalid", "../evil", "example.com", "-bad", "BAD", ""):
