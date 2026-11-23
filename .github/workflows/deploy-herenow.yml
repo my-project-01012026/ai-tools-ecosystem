@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       site_slug:
-        description: 'Existing here.now slug; leave empty when creating the site for the first time'
-        required: false
+        description: 'Existing AI Tools Ecosystem site slug (update in place only)'
+        required: true
+        default: 'quiet-flint-6kde'
         type: string
 permissions:
   contents: read
@@ -23,6 +24,11 @@ jobs:
         shell: bash
         run: |
           test "$REF_NAME" = refs/heads/main && test "$REF_PROTECTED" = true
+      - name: Verify exact existing site slug
+        shell: bash
+        env:
+          SITE_SLUG: ${{ inputs.site_slug }}
+        run: test "$SITE_SLUG" = quiet-flint-6kde
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
@@ -58,8 +64,12 @@ jobs:
             echo 'Missing HERENOW_API_KEY: deployment blocked.'
             exit 1
           fi
-          if [ -n "$SITE_SLUG" ]; then
-            python scripts/publish_herenow.py --publish --slug "$SITE_SLUG"
-          else
-            python scripts/publish_herenow.py --publish
-          fi
+          test "$SITE_SLUG" = quiet-flint-6kde
+          python scripts/publish_herenow.py --publish --slug "$SITE_SLUG"
+      - name: Confirm full live site and removed token URLs (no secrets)
+        shell: bash
+        env:
+          SITE_SLUG: ${{ inputs.site_slug }}
+        run: |
+          python scripts/audit_live_site.py --slug "$SITE_SLUG"
+          python scripts/check_retired_routes.py --slug "$SITE_SLUG"

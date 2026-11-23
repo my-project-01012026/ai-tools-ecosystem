@@ -27,4 +27,6 @@ jobs:
       - name: Compare live HTTPS content to frozen SHA-256 source inventory
         env:
           SITE_SLUG: ${{ inputs.site_slug }}
-        run: python scripts/audit_live_site.py --slug "$SITE_SLUG"
+        run: |
+          python scripts/audit_live_site.py --slug "$SITE_SLUG"
+          python scripts/check_retired_routes.py --slug "$SITE_SLUG"
