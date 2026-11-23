@@ -180,7 +180,7 @@ def publish(rows, key, site_slug=None, root=ROOT, base_url=BASE_URL):
     method = 'PUT' if site_slug else 'POST'
     payload = {
         'files': rows, 'displayName': 'AI Tools Ecosystem',
-        'displayDescription': 'AI programs, community and proposed Solana token — PRELAUNCH'
+        'displayDescription': 'Independent AI software portfolio: Local Media AI, CVLM Platform and LocalAIDevManager — PRELAUNCH'
     }
     if site_slug:
         # Optimistic concurrency: fail if the live version changed after inspection.
