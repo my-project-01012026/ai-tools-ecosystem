@@ -1,25 +1,26 @@
-# AI Tools Ecosystem
+# AI Tools Ecosystem — software portfolio
 
-Official prelaunch website source (v0.12.0). **Information only — no Solana token, sales, active trading pool, or released Windows application.**
+Independent founder-led AI software projects. This public repository contains the source for a static, informational website: **Local Media AI**, **CVLM Platform**, and **LocalAIDevManager**.
 
-## Website
+## Products and verified maturity
 
-The repository root is the static site. Start at [index.html](./index.html); Russian version: [ru/index.html](./ru/index.html). The project has sections for AI programs, community, proposed Solana tokenomics and funding, security, development status, and documentation.
+| Product | Stage | Details |
+| --- | --- | --- |
+| Local Media AI | Prototype under testing; public software release HOLD | [EN](/product/) · [RU](/ru/product/) · [separate information website](https://local-media-ai-community.cheekysloth259.chatgpt.site/en/) |
+| CVLM Platform | Concept/design; no publicly verified release | [EN](/cvlm/) · [RU](/ru/cvlm/) |
+| LocalAIDevManager | Concept/design; no publicly verified release | [EN](/localaidevmanager/) · [RU](/ru/localaidevmanager/) |
 
-The planned token supply is 1,000,000,000 with seven *draft* reserves. The monthly burn is a **simulation**, not real blockchain transactions or a promise of returns. Community 1.0 software is still in development, and access does not depend on buying a token.
+See [/status/](/status/), [/partners/](/partners/) and [/docs/](/docs/). Homepage translations are **draft**, not professionally reviewed. Only English and Russian have full product-detail pages; other locales use English detail fallbacks.
 
-The site is deliberately marked PRELAUNCH and noindex. Translations have not received all necessary native-speaker/legal review. There is **no confirmed deployment to here.now** at the time of this commit.
+## Security and deployment
 
-## Security and integrity
+- Static HTML/CSS with no JavaScript execution, external fonts, client analytics, forms, payments, login or media uploads.
+- CSP, a pinned stylesheet SRI hash, a SHA-256 file manifest and offline security tests.
+- Production publication remains **manual and protected** through the existing here.now environment; no automatic push to production from PRs.
+- Public host URL, HTTPS response headers, live links and analytics have **not** been independently verified in this change.
+- `robots.txt` and noindex metadata remain in place until a live host audit and localization review are complete.
+- The information site for Local Media AI is not a download or release approval.
 
-- Static HTML/CSS/JavaScript; no wallet connectors or payments.
-- No network API in local `assets/app.js`. It calculates display-only burn estimates.
-- CSP in HTML and SRI hashes for linked assets; production HTTP response headers require separate verification.
-- Source package scanned locally: 32 files, 23 HTML documents, 46/46 script/style SRI validations, no missing local file links, no external URLs, no embedded scripts, and no detected private keys.
-- This is **static source verification**, not a full independent vulnerability assessment or production host audit.
+No source code rights are granted merely because this repository is public. Program licensing remains subject to separate component review.
 
-## Licenses and trademarks
-
-No blanket open-source license is granted to the website code, branding, images, or token material merely by making this repository public. Component licenses and future software distribution are separately reviewed. Do not treat the proposed token as issued or offered.
-
-Last source snapshot: 2026-11-08. Mainnet, token issuance/sales, deployment, and software release remain separate gates.
+Updated 2026-11-23. All changes in this branch should be reviewed and pass CI before merge or production deployment.

@@ -1,0 +1,37 @@
+name: Static software portfolio QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - 'assets/**'
+      - 'data/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/site-ci.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - 'assets/**'
+      - 'data/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/site-ci.yml'
+permissions:
+  contents: read
+jobs:
+  offline-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Offline unit and site integrity tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Verify exact publishable inventory
+        run: python scripts/publish_herenow.py

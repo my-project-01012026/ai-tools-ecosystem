@@ -52,7 +52,7 @@ class DeploymentChecks(unittest.TestCase):
 
     def test_frozen_site_inventory(self):
         rows = deploy.inventory()
-        self.assertEqual(len(rows), 32)
+        self.assertEqual(len(rows), 33)
         self.assertIn('index.html', {x['path'] for x in rows})
 
     def test_reject_manifest_traversal(self):

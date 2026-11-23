@@ -1,2 +1,4 @@
-PRELAUNCH — no token exists; never share seed phrases or private keys.
-For official reporting contacts, check the verified site once launched.
+AI Tools Ecosystem is an informational static software portfolio.
+Report suspected vulnerabilities to the repository owner using an established private channel.
+Never share passwords, private keys or confidential media through public issues.
+Deployment and software-release security checks remain separate.
