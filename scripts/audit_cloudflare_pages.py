@@ -64,7 +64,10 @@ def audit(host, request=fetch, rows=None):
     for row in rows:
         name = row["path"]
         # Cloudflare redirects /folder/index.html to the actual public /folder/ URL.
-        route = "/" + (name[:-len("index.html")] if name.endswith("index.html") else name)
+        if name == "404.html":
+            route = "/404"  # Pages canonicalizes .html to extensionless URL.
+        else:
+            route = "/" + (name[:-len("index.html")] if name.endswith("index.html") else name)
         if route in seen:
             raise AuditError("Duplicate public route")
         seen.add(route)
