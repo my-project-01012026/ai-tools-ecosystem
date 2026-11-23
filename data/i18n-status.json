@@ -1,20 +1,20 @@
 {
+  "schema": 2,
   "languages": {
-    "en": "DRAFT",
-    "es": "DRAFT",
-    "hi": "DRAFT",
-    "id": "DRAFT",
-    "ja": "DRAFT",
-    "ko": "DRAFT",
-    "pt-BR": "DRAFT",
-    "ru": "DRAFT",
-    "th": "DRAFT",
-    "tr": "DRAFT",
-    "uk": "DRAFT",
-    "vi": "DRAFT"
+    "en": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "ru": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "es": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "pt-BR": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "ja": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "ko": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "hi": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "uk": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "th": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "id": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "vi": "DRAFT_HUMAN_REVIEW_REQUIRED",
+    "tr": "DRAFT_HUMAN_REVIEW_REQUIRED"
   },
-  "release_product_language_pair": "EN_TO_RU_ONLY",
-  "schema": 1,
-  "seo_indexing": "DISABLED_UNTIL_APPROVAL",
-  "translation_status": "DRAFT_HUMAN_REVIEW_REQUIRED"
+  "software_release_language_pair": "EN_TO_RU_ONLY",
+  "locale_product_details": "EN_RU_WITH_EN_FALLBACK",
+  "seo_indexing": "DISABLED_PENDING_APPROVAL"
 }

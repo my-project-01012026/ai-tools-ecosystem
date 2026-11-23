@@ -1,25 +1,34 @@
 {
-  "product": {
-    "installer": "NOT_AVAILABLE",
-    "license_audit": "HOLD",
-    "minimum_hardware": "NOT_ESTABLISHED",
-    "name": "Local Media AI Community 1.0",
-    "pipeline": "EN_TO_RU_MP4",
-    "release": "NOT_RELEASED",
-    "windows_nvidia_e2e": "NOT_CONFIRMED"
+  "schema": 2,
+  "updated": "2026-11-23",
+  "site": {
+    "type": "STATIC_PORTFOLIO",
+    "release": "PRELAUNCH",
+    "publication": "NOT_VERIFIED_LIVE",
+    "indexing": "DISABLED_PENDING_HOST_QA"
   },
-  "schema": 1,
-  "site": "STAGING_ONLY",
-  "token": {
-    "devnet_security": "NOT_CONFIRMED",
-    "legal_review": "HOLD",
-    "mint_address": null,
-    "network": "Solana",
-    "pool_address": null,
-    "sales": false,
-    "status": "NOT_ISSUED",
-    "utility": "NOT_VALIDATED"
-  },
-  "updated": "2026-11-08",
-  "version": "0.12.0"
+  "products": [
+    {
+      "name": "Local Media AI",
+      "stage": "PROTOTYPE_TESTING_RELEASE_HOLD",
+      "website": "https://local-media-ai-community.cheekysloth259.chatgpt.site/",
+      "website_en": "https://local-media-ai-community.cheekysloth259.chatgpt.site/en/",
+      "first_scope": "EN_VIDEO_TO_RU_MP4",
+      "installer": "NOT_PUBLICLY_RELEASED",
+      "windows_nvidia_e2e": "NOT_CONFIRMED",
+      "license_audit": "HOLD"
+    },
+    {
+      "name": "CVLM Platform",
+      "stage": "CONCEPT_DESIGN",
+      "public_release": false,
+      "verified_capabilities": false
+    },
+    {
+      "name": "LocalAIDevManager",
+      "stage": "CONCEPT_DESIGN",
+      "public_release": false,
+      "verified_capabilities": false
+    }
+  ]
 }
