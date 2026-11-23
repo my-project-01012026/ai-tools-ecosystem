@@ -55,7 +55,7 @@ class CloudflareStagingTests(unittest.TestCase):
         ]
         entries = [{"path": path, "size": len(content),
                     "hash": hashlib.sha256(content).hexdigest()} for path, content in pages]
-        blobs = {"/" + (path[:-len("index.html")] if path.endswith("index.html") else path): content
+        blobs = {("/404" if path == "404.html" else "/" + (path[:-len("index.html")] if path.endswith("index.html") else path)): content
                  for path, content in pages}
         headers = {"Strict-Transport-Security": "max-age=31536000",
                    "Content-Security-Policy": "default-src 'none'; script-src 'none'; frame-ancestors 'none'; style-src 'self'",
