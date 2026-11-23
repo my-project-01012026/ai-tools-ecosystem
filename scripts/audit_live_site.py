@@ -15,8 +15,8 @@ import urllib.request
 
 from publish_herenow import inventory
 
-SLUG_RE = re.compile(r"[a-z0-9][a-z0-9-]{1,100}\\Z")
-PATH_RE = re.compile(r"[A-Za-z0-9._/-]+\\Z")
+SLUG_RE = re.compile(r"[a-z0-9][a-z0-9-]{1,100}\Z")
+PATH_RE = re.compile(r"[A-Za-z0-9._/-]+\Z")
 PRODUCT_URL = "https://local-media-ai-community.cheekysloth259.chatgpt.site/en/"
 PRODUCTS = ("Local Media AI", "CVLM Platform", "LocalAIDevManager")
 MAX_EXTERNAL_BYTES = 1_000_000
@@ -100,7 +100,7 @@ def audit(slug, rows=None, opener=None):
     if root != checked["index.html"]:
         raise AuditFailure("Public homepage / differs from approved index.html")
     robots = checked["robots.txt"].decode("utf-8", "replace")
-    if not re.search(r"(?m)^Disallow:\\s*/\\s*$", robots):
+    if not re.search(r"(?m)^Disallow:\s*/\s*$", robots):
         raise AuditFailure("Prelaunch robots.txt unexpectedly allows indexing")
 
     for header in ("Strict-Transport-Security", "Content-Security-Policy", "X-Content-Type-Options"):
