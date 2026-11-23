@@ -225,6 +225,15 @@ class DeploymentChecks(unittest.TestCase):
             self.assertNotIn('Authorization', seen[1][2])
             self.assertNotIn(DUMMY_KEY, str(seen[1]))
 
+    def test_publish_metadata_is_software_only(self):
+        source = SCRIPT.read_text(encoding='utf-8')
+        self.assertIn("'displayName': 'AI Tools Ecosystem'", source)
+        self.assertIn("'displayDescription': 'Independent AI software portfolio:", source)
+        for product in ('Local Media AI', 'CVLM Platform', 'LocalAIDevManager'):
+            self.assertIn(product, source)
+        self.assertNotIn('proposed Solana token', source)
+        self.assertNotIn('community and proposed', source)
+
     def test_no_proxy_bypass_or_untrusted_execution(self):
         source = SCRIPT.read_text(encoding='utf-8')
         self.assertNotIn('ProxyHandler({})', source)
