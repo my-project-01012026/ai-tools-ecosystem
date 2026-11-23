@@ -1,0 +1,9 @@
+# Cloudflare Pages: security headers for static pages. Do not index during staging.
+/*
+  Strict-Transport-Security: max-age=31536000
+  Content-Security-Policy: default-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; frame-src 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  X-Robots-Tag: noindex, nofollow
