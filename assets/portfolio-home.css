@@ -5,3 +5,17 @@
 .site-header .menu-body a{font-size:1rem;min-height:44px;display:flex;align-items:center}
 .hero .t-hero{max-width:680px;font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.55}
 .hero .hero-stage{color:var(--muted);font-size:1rem;line-height:1.6;margin:0 0 24px}
+
+/* Compact portfolio cards, approved 2026-11-24. */
+#portfolio{scroll-margin-top:100px}
+#portfolio .section-head{margin-bottom:20px}
+#portfolio .section-head h2{font-size:clamp(1.85rem,3vw,2.65rem);margin:0}
+#portfolio .grid{align-items:stretch;gap:18px}
+#portfolio .card{display:flex;flex-direction:column;padding:22px;gap:12px}
+#portfolio .card .portfolio-stage{font-size:.82rem;line-height:1.35;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.025em;margin:0}
+#portfolio .card:first-child .portfolio-stage{color:var(--lime)}
+#portfolio .card h3{font-size:1.35rem;line-height:1.25;margin:0}
+#portfolio .card p{font-size:1rem;line-height:1.55;margin:0 0 6px}
+#portfolio .card .pillar-link{align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding-top:8px;margin-top:auto;font-weight:700;font-size:1rem;text-decoration:none}
+#portfolio .card .pillar-link:hover,#portfolio .card .pillar-link:focus-visible{text-decoration:underline}
+@media(max-width:650px){#portfolio .card{padding:20px}#portfolio{scroll-margin-top:80px}}
