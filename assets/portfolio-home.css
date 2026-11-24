@@ -1,0 +1,7 @@
+/* Portfolio homepage: larger navigation and concise introduction. */
+.site-header .nav{gap:14px;align-items:center}
+.site-header .nav a{font-size:1.0625rem;font-weight:600;display:inline-flex;align-items:center;min-height:44px;padding:5px 4px;color:var(--fg)}
+.site-header .nav a:hover,.site-header .nav a:focus-visible{color:var(--lime)}
+.site-header .menu-body a{font-size:1rem;min-height:44px;display:flex;align-items:center}
+.hero .t-hero{max-width:680px;font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.55}
+.hero .hero-stage{color:var(--muted);font-size:1rem;line-height:1.6;margin:0 0 24px}
