@@ -14,10 +14,10 @@ import audit_cloudflare_pages as live
 class CloudflareStagingTests(unittest.TestCase):
     def test_build_exact_audited_bundle(self):
         count = pack.build()
-        self.assertEqual(count, 33)
+        self.assertEqual(count, 30)
         actual = {p.relative_to(pack.BUILD_DIR).as_posix()
                   for p in pack.BUILD_DIR.rglob("*") if p.is_file()}
-        self.assertEqual(len(actual), 34)
+        self.assertEqual(len(actual), 31)
         self.assertIn("_headers", actual)
         for excluded in ("README.md", ".github/workflows/site-ci.yml",
                          "scripts/publish_herenow.py", "token/index.html",

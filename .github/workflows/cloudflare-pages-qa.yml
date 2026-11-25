@@ -35,7 +35,7 @@ jobs:
         run: python scripts/build_cloudflare_pages.py
       - name: Check only frozen site files and Cloudflare headers shipped
         run: |
-          test "$(find dist-cloudflare -type f | wc -l)" -eq 34
+          test "$(find dist-cloudflare -type f | wc -l)" -eq 31
           test -f dist-cloudflare/_headers
           test ! -e dist-cloudflare/.github
           test ! -e dist-cloudflare/scripts

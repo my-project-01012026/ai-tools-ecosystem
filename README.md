@@ -10,7 +10,7 @@ Independent founder-led AI software projects. This public repository contains th
 | CVLM Platform | Concept/design; no publicly verified release | [EN](/cvlm/) · [RU](/ru/cvlm/) |
 | LocalAIDevManager | Concept/design; no publicly verified release | [EN](/localaidevmanager/) · [RU](/ru/localaidevmanager/) |
 
-See [/status/](/status/), [/partners/](/partners/) and [/docs/](/docs/). Homepage translations are **draft**, not professionally reviewed. Only English and Russian have full product-detail pages; other locales use English detail fallbacks.
+See [/status/](/status/), [/partners/](/partners/) and [/docs/](/docs/). Nine priority website locales: English, Russian, Kazakh, Simplified Chinese, German, French, Arabic, Japanese and Korean. Homepage translations are **draft**, not professionally reviewed. Eight older locale source directories are retained as a reserve but excluded from the audited deployment inventory. Only English and Russian have full product-detail pages; other locales use English detail fallbacks.
 
 ## Security and deployment
 
