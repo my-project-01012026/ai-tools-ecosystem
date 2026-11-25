@@ -9,3 +9,50 @@
 @media(max-width:1100px){.site-header .nav{display:none}.site-header .nav-mobile{display:block}}@media(min-width:1101px){.site-header .nav-mobile{display:none}}
 @media(max-width:800px){.token-spotlight,.token-metrics{grid-template-columns:1fr}.allocation-bars{grid-template-columns:repeat(4,minmax(0,1fr))}.mini-roadmap{grid-template-columns:1fr 1fr}}
 @media(max-width:510px){.allocation-bars{grid-template-columns:repeat(2,minmax(0,1fr))}.mini-roadmap{grid-template-columns:1fr}.ecosystem-pillars .card{min-height:0}}
+
+/* Portfolio homepage: larger navigation and concise introduction. */
+.site-header .nav{gap:14px;align-items:center}
+.site-header .nav a{font-size:1.0625rem;font-weight:600;display:inline-flex;align-items:center;min-height:44px;padding:5px 4px;color:var(--fg)}
+.site-header .nav a:hover,.site-header .nav a:focus-visible{color:var(--lime)}
+.site-header .menu-body a{font-size:1rem;min-height:44px;display:flex;align-items:center}
+.hero .t-hero{max-width:680px;font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.55}
+.hero .hero-stage{color:var(--muted);font-size:1rem;line-height:1.6;margin:0 0 24px}
+
+/* Compact portfolio cards, approved 2026-11-24. */
+#portfolio{scroll-margin-top:100px}
+#portfolio .section-head{margin-bottom:20px}
+#portfolio .section-head h2{font-size:clamp(1.85rem,3vw,2.65rem);margin:0}
+#portfolio .grid{align-items:stretch;gap:18px}
+#portfolio .card{display:flex;flex-direction:column;padding:22px;gap:12px}
+#portfolio .card .portfolio-stage{font-size:.82rem;line-height:1.35;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.025em;margin:0}
+#portfolio .card:first-child .portfolio-stage{color:var(--lime)}
+#portfolio .card h3{font-size:1.35rem;line-height:1.25;margin:0}
+#portfolio .card p{font-size:1rem;line-height:1.55;margin:0 0 6px}
+#portfolio .card .pillar-link{align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding-top:8px;margin-top:auto;font-weight:700;font-size:1rem;text-decoration:none}
+#portfolio .card .pillar-link:hover,#portfolio .card .pillar-link:focus-visible{text-decoration:underline}
+@media(max-width:650px){#portfolio .card{padding:20px}#portfolio{scroll-margin-top:80px}}
+
+/* Responsive shared footer and compact collaboration section. */
+.site-footer{margin-top:12px;padding:28px 0 20px;border-top:1px solid var(--line);color:var(--muted)}
+.site-footer .footer-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:24px 36px;align-items:start}
+.site-footer .footer-grid>*{min-width:0}
+.site-footer .footer-brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;color:var(--fg);margin:0 0 12px}
+.site-footer .footer-brand img{width:40px;height:40px;flex:none}
+.site-footer .footer-brand span{font-size:1rem;font-weight:800;line-height:1.15;letter-spacing:.04em}
+.site-footer .footer-brand small{display:block;font-size:.75rem;color:var(--muted);letter-spacing:.12em}
+.site-footer .footer-description{font-size:.94rem;line-height:1.6;margin:0;max-width:34ch}
+.site-footer .footer-title{font-size:.98rem;font-weight:700;color:var(--fg);margin:0 0 10px}
+.site-footer .footer-links{display:flex;flex-direction:column;align-items:flex-start;gap:2px;list-style:none;padding:0;margin:0}
+.site-footer .footer-links a,.site-footer .footer-bottom a{display:inline-flex;align-items:center;min-height:32px;color:var(--muted);font-size:.94rem;line-height:1.35;text-decoration:none;overflow-wrap:anywhere}
+.site-footer a:hover,.site-footer a:focus-visible{color:var(--lime);text-decoration:underline;text-underline-offset:4px}
+.site-footer .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 24px;border-top:1px solid var(--line);padding-top:12px;margin-top:22px;font-size:.82rem}
+.site-footer .footer-bottom a{font-size:.82rem}
+main>section:last-child{padding-bottom:36px}
+#contacts,#privacy{scroll-margin-top:110px}
+#funding .funding-card h2{font-size:clamp(1.75rem,3vw,2.5rem);line-height:1.2;margin:0 0 14px}
+#funding .funding-card .funding-intro{max-width:76ch;margin:0 0 18px}
+#funding .funding-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 20px}
+#funding .funding-options p{margin:0;font-size:.94rem;line-height:1.45}
+#funding .funding-options strong{display:block;margin-bottom:3px;color:var(--fg)}
+@media(max-width:720px){.site-footer .footer-grid{grid-template-columns:1fr 1fr;gap:22px}.site-footer .footer-about{grid-column:1/-1}.site-footer .footer-links a,.site-footer .footer-bottom a{min-height:44px}.site-footer .footer-bottom{margin-top:18px}#funding .funding-options{grid-template-columns:1fr;gap:12px}}
+@media(max-width:430px){.site-footer .footer-grid{grid-template-columns:1fr;gap:20px}.site-footer .footer-about{grid-column:auto}.site-footer .footer-bottom{align-items:flex-start;flex-direction:column}.site-footer{padding:24px 0 16px}}

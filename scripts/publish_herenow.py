@@ -95,8 +95,8 @@ def inventory(root=ROOT, manifest=MANIFEST):
         if not ctype:
             raise ValueError('Unknown file type: '+name)
         rows.append({'path': name, 'size': len(data), 'contentType': ctype, 'hash': digest})
-    if len(rows) != 33 or not any(x['path'] == 'index.html' for x in rows):
-        raise ValueError('Expected exactly 33 website files including index.html')
+    if len(rows) != 30 or not any(x['path'] == 'index.html' for x in rows):
+        raise ValueError('Expected exactly 30 website files including index.html')
     return rows
 
 

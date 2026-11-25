@@ -32,10 +32,10 @@ def verify_headers(content):
         raise UnsafeBundle("Unexpected _headers rule")
 
 def build():
-    rows = inventory()  # SHA-256, symlinks, exact 33-file inventory, validated before deletion
+    rows = inventory()  # SHA-256, symlinks, exact 30-file inventory, validated before deletion
     verify_headers(HEADERS.read_text(encoding="utf-8"))
     expected = {r["path"] for r in rows}
-    if len(rows) != 33 or any(
+    if len(rows) != 30 or any(
         bad in expected for bad in
         ("token/index.html", "ru/token/index.html", "data/tokenomics.json", "assets/app.js")
     ):
